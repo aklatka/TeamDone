@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">TeamDone</string>
+    <string name="app_name">Teamdone</string>
+    <string name="login_subtitle">
+        Dołącz i zyskaj pełną kontrolę nad zadaniami!
+    </string>
+    <string name="signup_subtitle">d</string>
+    <string name="hide_password">Ukryj hasło</string>
+    <string name="show_password">Pokaż hasło</string>
+    <string name="sign_in">Zaloguj się</string>
+    <string name="sign_up">Utwórz nowe konto</string>
+    <string name="login_by_google">Zaloguj przez Google</string>
+    <string name="login_by_github">Zaloguj przez GitHub</string>
+    <string name="login_by_microsoft">Zaloguj przez Microsoft</string>
+    <string name="password">Hasło</string>
+    <string name="email">Email</string>
+    <string name="email_placeholder">john.doe@example.com</string>
+    <string name="already_have_account">Już posiadam konto</string>
+    <string name="firstname">Imię</string>
+    <string name="lastname">Nazwisko</string>
+    <string name="password_confirm">Potwierdź hasło</string>
 </resources>
