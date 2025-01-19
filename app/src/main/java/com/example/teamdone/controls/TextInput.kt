@@ -44,7 +44,8 @@ fun TextInput(
     label: String = "Email",
     placeholder: String = "",
     inputType: Int = InputType.TYPE_TEXT_VARIATION_NORMAL,
-    valueVisible: Boolean = false
+    valueVisible: Boolean = false,
+    error: String? = null
 ) {
     var isFocused by remember { mutableStateOf(false) }
     var isValueVisible by remember { mutableStateOf(
@@ -98,5 +99,12 @@ fun TextInput(
                 }
             }
         )
+        error?.let {
+            Text(
+                it,
+                color = Color.Red,
+                fontSize = 13.sp
+            )
+        }
     }
 }

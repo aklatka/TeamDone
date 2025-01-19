@@ -1,6 +1,7 @@
 package com.example.teamdone.screens
 
 import android.text.InputType
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,8 @@ import com.example.teamdone.controls.SecondaryButton
 import com.example.teamdone.controls.SocialLoginButton
 import com.example.teamdone.controls.TextInput
 import com.example.teamdone.layouts.AuthLayout
+import com.example.teamdone.services.AuthService
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
 import compose.icons.fontawesomeicons.brands.Github
@@ -34,13 +37,41 @@ fun LoginScreen(
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var error: String? by remember { mutableStateOf(null) }
+
+    val errorCredentials = stringResource(R.string.error_invalid_credentials)
+
+    fun submit() {
+        AuthService().loginUser(
+            email,
+            password,
+            onSuccess = {
+
+            },
+            onFailure = { e ->
+                e.let {
+
+                    error = when(e) {
+                        is FirebaseAuthInvalidCredentialsException -> {
+                            errorCredentials
+                        }
+                        else -> {
+                            e.localizedMessage?.toString()
+                        }
+                    }
+                }
+            }
+        )
+    }
 
     AuthLayout(
         modifier = Modifier,
         signupMode = false,
         actionsContent = {
             Spacer(Modifier.height(30.dp))
-            PrimaryButton(stringResource(R.string.sign_in))
+            PrimaryButton(stringResource(R.string.sign_in),
+                onClick = {submit()}
+            )
             Spacer(Modifier.height(10.dp))
             SecondaryButton(
                 stringResource(R.string.sign_up),
@@ -71,7 +102,9 @@ fun LoginScreen(
             value = email,
             onValueChange = {email = it},
             label = stringResource(R.string.email),
-            placeholder = stringResource(R.string.email_placeholder)
+            placeholder = stringResource(R.string.email_placeholder),
+            error = error
+//            stringResource(R.string.error_invalid_credentials)
         )
         TextInput(
             value = password,

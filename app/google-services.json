@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39528548403",
+    "project_id": "teamdone-40fc2",
+    "storage_bucket": "teamdone-40fc2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39528548403:android:063ab0d4f647c2f7dcbb46",
+        "android_client_info": {
+          "package_name": "com.example.teamdone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwbnRjG7dyGRt1Cz_Vc8uQbi6ajmxl5so"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

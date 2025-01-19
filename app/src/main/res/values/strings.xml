@@ -3,7 +3,9 @@
     <string name="login_subtitle">
         Dołącz i zyskaj pełną kontrolę nad zadaniami!
     </string>
-    <string name="signup_subtitle">d</string>
+    <string name="signup_subtitle">
+        Dołącz i zyskaj pełną kontrolę nad zadaniami!
+    </string>
     <string name="hide_password">Ukryj hasło</string>
     <string name="show_password">Pokaż hasło</string>
     <string name="sign_in">Zaloguj się</string>
@@ -18,4 +20,5 @@
     <string name="firstname">Imię</string>
     <string name="lastname">Nazwisko</string>
     <string name="password_confirm">Potwierdź hasło</string>
+    <string name="error_invalid_credentials">Nieprawidłowy email lub hasło</string>
 </resources>
