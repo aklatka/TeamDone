@@ -11,42 +11,22 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.teamdone.components.AppDrawer
 import com.example.teamdone.screens.DashboardScreen
 import com.example.teamdone.screens.LoginScreen
+import com.example.teamdone.screens.MainScreen
 import com.example.teamdone.screens.SignupScreen
 import com.example.teamdone.states.AppViewModel
 
 @Composable
-fun AppNavigation(
-    viewModel: AppViewModel = hiltViewModel()
-) {
-    val navController = rememberNavController()
-
-    val isUserLoggedIn by viewModel.isUserLoggedIn.collectAsState()
-
-    if(isUserLoggedIn) {
-
-        AppNavHost(
-            navController,
-            startDestination = NavigationItem.Dashboard.route
-        )
-
-    } else {
-
-        AppNavHost(navController)
-
-    }
-}
-
-@Composable
 fun AppNavHost(
-    navController: NavHostController,
     startDestination: String = NavigationItem.AuthLogin.route
 ) {
+    val authNavController = rememberNavController()
 
     NavHost(
         modifier = Modifier,
-        navController = navController,
+        navController = authNavController,
         startDestination = startDestination
     ) {
 
@@ -65,9 +45,7 @@ fun AppNavHost(
                 )
             }
         ) {
-            LoginScreen(
-                navController = navController
-            )
+            LoginScreen(authNavController)
         }
         composable(
             NavigationItem.AuthSignup.route,
@@ -84,12 +62,12 @@ fun AppNavHost(
                 )
             }
         ) {
-            SignupScreen(navController)
+            SignupScreen(authNavController)
         }
         composable(
-            NavigationItem.Dashboard.route,
+            NavigationItem.Main.route
         ) {
-            DashboardScreen(navController)
+            MainScreen(authNavController)
         }
     }
 }

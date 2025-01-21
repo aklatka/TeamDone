@@ -48,8 +48,12 @@ fun App(
     val auth = FirebaseAuth.getInstance()
 
     if(auth.currentUser != null) {
-        viewModel.login()
+        viewModel.autoLogin()
     }
 
-    AppNavigation()
+    AppNavHost(
+        startDestination =
+            if(auth.currentUser != null) NavigationItem.Main.route
+            else NavigationItem.AuthLogin.route
+    )
 }

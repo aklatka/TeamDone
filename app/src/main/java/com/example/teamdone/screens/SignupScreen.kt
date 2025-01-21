@@ -103,7 +103,7 @@ fun SignupScreen(
                 PrimaryButton(
                     "Kontynuuj",
                     onClick = {
-                        navController.navigate(NavigationItem.Dashboard.route) {
+                        navController.navigate(NavigationItem.Main.route) {
                             popUpTo(0)
                         }
                     }

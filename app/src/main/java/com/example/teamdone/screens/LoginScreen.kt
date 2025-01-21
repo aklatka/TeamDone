@@ -50,10 +50,11 @@ fun LoginScreen(
         AuthService().loginUser(
             email,
             password,
-            onSuccess = {
+            onSuccess = { user ->
+                viewModel.setUser(user)
                 loading = false
                 viewModel.login()
-                navController.navigate(NavigationItem.Dashboard.route) {
+                navController.navigate(NavigationItem.Main.route) {
                     popUpTo(0)
                 }
             },

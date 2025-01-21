@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.teamdone.NavigationItem
+import com.example.teamdone.components.AppDrawer
 import com.example.teamdone.controls.PrimaryButton
 import com.example.teamdone.states.AppViewModel
 import com.google.firebase.Firebase
@@ -23,14 +24,5 @@ fun DashboardScreen(
 
     user?.let {
         Text(it.email.toString())
-        PrimaryButton(
-            "Log out",
-            onClick = {
-                viewModel.logout()
-                navController.navigate(NavigationItem.AuthLogin.route) {
-                    popUpTo(0)
-                }
-            }
-        )
     }
 }
