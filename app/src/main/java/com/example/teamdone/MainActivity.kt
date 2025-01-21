@@ -9,10 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.teamdone.states.AppViewModel
 import com.example.teamdone.ui.theme.TeamDoneTheme
+import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 //        val splashscreen = installSplashScreen()
@@ -35,10 +40,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun App(modifier: Modifier = Modifier, navController: NavHostController) {
-    AppNavHost(
-        navController = navController,
-        modifier = modifier,
-        startDestination = NavigationItem.AuthLogin.route
-    )
+fun App(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    viewModel: AppViewModel = hiltViewModel()
+) {
+    val auth = FirebaseAuth.getInstance()
+
+    if(auth.currentUser != null) {
+        viewModel.login()
+    }
+
+    AppNavigation()
 }

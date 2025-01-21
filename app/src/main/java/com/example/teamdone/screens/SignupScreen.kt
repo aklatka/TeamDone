@@ -2,6 +2,7 @@ package com.example.teamdone.screens
 
 import android.annotation.SuppressLint
 import android.text.InputType
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,13 +21,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -39,10 +37,6 @@ import com.example.teamdone.controls.TextInput
 import com.example.teamdone.data.User
 import com.example.teamdone.layouts.AuthLayout
 import com.example.teamdone.services.AuthService
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
-import kotlinx.coroutines.tasks.await
-import java.util.Locale
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
@@ -55,9 +49,12 @@ fun SignupScreen(
     var password by remember { mutableStateOf("") };
     var passwordConfirm by remember { mutableStateOf("") };
 
+    var loading by remember { mutableStateOf(false) }
+
     var user: User? by remember { mutableStateOf(null) }
 
     fun submit() {
+        loading = true
         AuthService().createUser(
             firstname,
             lastname,
@@ -65,6 +62,21 @@ fun SignupScreen(
             password,
             onSuccess = {
                 user = it
+                loading = false
+            },
+            onFailure = {
+                it.let {
+//                    error = when(it) {
+//                        is FirebaseAuthInvalidCredentialsException -> {
+//                            errorCredentials
+//                        }
+//                        else -> {
+//                            e.localizedMessage?.toString()
+//                        }
+//                    }
+                    Log.w("Signup", "submit: ", it)
+                    loading = false
+                }
             }
         )
     }
@@ -77,7 +89,8 @@ fun SignupScreen(
                 Spacer(Modifier.height(30.dp))
                 PrimaryButton(
                     stringResource(R.string.sign_up),
-                    onClick = { submit() }
+                    onClick = { submit() },
+                    loading = loading
                 )
                 Spacer(Modifier.height(10.dp))
                 SecondaryButton(
@@ -89,6 +102,11 @@ fun SignupScreen(
             } else {
                 PrimaryButton(
                     "Kontynuuj",
+                    onClick = {
+                        navController.navigate(NavigationItem.Dashboard.route) {
+                            popUpTo(0)
+                        }
+                    }
                 )
             }
         }
@@ -137,7 +155,7 @@ fun SignupScreen(
                         imageModifier = Modifier
                             .size(150.dp)
                             .clip(CircleShape)
-                            .border(2.dp, Color.Gray, CircleShape),
+                            .border(2.dp, Color.Black, CircleShape),
                         contentScale = ContentScale.Crop
                     )
                     Spacer(Modifier.height(20.dp))

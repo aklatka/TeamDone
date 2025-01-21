@@ -1,19 +1,16 @@
 package com.example.teamdone.controls
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,13 +24,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.teamdone.R
-import com.example.teamdone.ui.theme.PrimaryColor
 
-@Preview(showBackground = true)
 @Composable
 fun PrimaryButton(
     text: String = "",
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    loading: Boolean = false
 ) {
 
     Button(
@@ -42,9 +38,27 @@ fun PrimaryButton(
         modifier = Modifier.fillMaxWidth()
             .padding(0.dp),
         border = BorderStroke(1.dp, colorResource(R.color.primary)),
-        colors = ButtonDefaults.buttonColors(colorResource(R.color.primary)),
+        colors = ButtonDefaults.buttonColors(colorResource(R.color.primary))
     ) {
-        Text(text)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            if(loading) {
+                Box(
+                    modifier = Modifier
+                        .size(20.dp)
+                ) {
+                    CircularProgressIndicator(
+                        color = Color.White,
+                        strokeWidth = 3.dp
+                    )
+                }
+            } else {
+                Text(text)
+            }
+        }
     }
 }
 

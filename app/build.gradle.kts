@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -57,6 +59,11 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation("com.google.dagger:dagger:2.51.1")
+    kapt("com.google.dagger:dagger-compiler:2.51.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

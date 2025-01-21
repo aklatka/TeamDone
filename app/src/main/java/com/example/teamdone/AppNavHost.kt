@@ -3,22 +3,49 @@ package com.example.teamdone
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.teamdone.screens.DashboardScreen
 import com.example.teamdone.screens.LoginScreen
 import com.example.teamdone.screens.SignupScreen
+import com.example.teamdone.states.AppViewModel
+
+@Composable
+fun AppNavigation(
+    viewModel: AppViewModel = hiltViewModel()
+) {
+    val navController = rememberNavController()
+
+    val isUserLoggedIn by viewModel.isUserLoggedIn.collectAsState()
+
+    if(isUserLoggedIn) {
+
+        AppNavHost(
+            navController,
+            startDestination = NavigationItem.Dashboard.route
+        )
+
+    } else {
+
+        AppNavHost(navController)
+
+    }
+}
 
 @Composable
 fun AppNavHost(
-    modifier: Modifier = Modifier,
     navController: NavHostController,
     startDestination: String = NavigationItem.AuthLogin.route
 ) {
 
     NavHost(
-        modifier = modifier,
+        modifier = Modifier,
         navController = navController,
         startDestination = startDestination
     ) {
@@ -38,7 +65,9 @@ fun AppNavHost(
                 )
             }
         ) {
-            LoginScreen(navController)
+            LoginScreen(
+                navController = navController
+            )
         }
         composable(
             NavigationItem.AuthSignup.route,
@@ -57,6 +86,10 @@ fun AppNavHost(
         ) {
             SignupScreen(navController)
         }
-
+        composable(
+            NavigationItem.Dashboard.route,
+        ) {
+            DashboardScreen(navController)
+        }
     }
 }

@@ -16,7 +16,8 @@ class AuthService {
         lastname: String,
         email: String,
         password: String,
-        onSuccess: (user: User) -> Unit
+        onSuccess: (user: User) -> Unit,
+        onFailure: (e: Exception) -> Unit,
     ) {
         val auth = FirebaseAuth.getInstance()
         val firestore = FirebaseFirestore.getInstance()
@@ -56,6 +57,9 @@ class AuthService {
                             }
                     }
                 }
+            }
+            .addOnFailureListener { e ->
+                onFailure(e)
             }
     }
 

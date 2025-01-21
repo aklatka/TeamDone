@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.teamdone.NavigationItem
 import com.example.teamdone.R
@@ -24,6 +25,7 @@ import com.example.teamdone.controls.SocialLoginButton
 import com.example.teamdone.controls.TextInput
 import com.example.teamdone.layouts.AuthLayout
 import com.example.teamdone.services.AuthService
+import com.example.teamdone.states.AppViewModel
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Brands
@@ -33,24 +35,30 @@ import compose.icons.fontawesomeicons.brands.Microsoft
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: AppViewModel = hiltViewModel()
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var loading by remember { mutableStateOf(false) }
     var error: String? by remember { mutableStateOf(null) }
 
     val errorCredentials = stringResource(R.string.error_invalid_credentials)
 
     fun submit() {
+        loading = true
         AuthService().loginUser(
             email,
             password,
             onSuccess = {
-
+                loading = false
+                viewModel.login()
+                navController.navigate(NavigationItem.Dashboard.route) {
+                    popUpTo(0)
+                }
             },
             onFailure = { e ->
                 e.let {
-
                     error = when(e) {
                         is FirebaseAuthInvalidCredentialsException -> {
                             errorCredentials
@@ -59,6 +67,7 @@ fun LoginScreen(
                             e.localizedMessage?.toString()
                         }
                     }
+                    loading = false
                 }
             }
         )
@@ -69,8 +78,10 @@ fun LoginScreen(
         signupMode = false,
         actionsContent = {
             Spacer(Modifier.height(30.dp))
-            PrimaryButton(stringResource(R.string.sign_in),
-                onClick = {submit()}
+            PrimaryButton(
+                stringResource(R.string.sign_in),
+                onClick = {submit()},
+                loading = loading
             )
             Spacer(Modifier.height(10.dp))
             SecondaryButton(
