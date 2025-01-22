@@ -2,7 +2,6 @@ package com.example.teamdone.screens
 
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,7 +13,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.teamdone.AuthorizedNavigationItem
-import com.example.teamdone.NavigationItem
 import com.example.teamdone.components.AppDrawer
 import com.example.teamdone.data.User
 import com.example.teamdone.states.AppViewModel
@@ -54,6 +52,16 @@ fun MainScreen(
                 AuthorizedNavigationItem.Dashboard.route,
             ) {
                 DashboardScreen(navController)
+            }
+            composable(
+                AuthorizedNavigationItem.TeamList.route,
+            ) {
+                TeamListScreen(navController)
+            }
+            composable(
+                AuthorizedNavigationItem.NewTeam.route,
+            ) {
+                NewTeamScreen(navController)
             }
             composable(
                 AuthorizedNavigationItem.Settings.route,

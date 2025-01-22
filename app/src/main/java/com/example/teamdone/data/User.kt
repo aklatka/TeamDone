@@ -18,6 +18,10 @@ data class User(
         )
     }
 
+    fun displayName(): String {
+        return "$firstname $lastname"
+    }
+
     companion object {
         fun fromMap(map: MutableMap<String, Any>?): User? {
 

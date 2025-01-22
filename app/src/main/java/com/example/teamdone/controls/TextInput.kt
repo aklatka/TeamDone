@@ -45,7 +45,8 @@ fun TextInput(
     placeholder: String = "",
     inputType: Int = InputType.TYPE_TEXT_VARIATION_NORMAL,
     valueVisible: Boolean = false,
-    error: String? = null
+    error: String? = null,
+    lines: Int = 1,
 ) {
     var isFocused by remember { mutableStateOf(false) }
     var isValueVisible by remember { mutableStateOf(
@@ -73,6 +74,8 @@ fun TextInput(
             placeholder = {
                 Text(placeholder)
             },
+            minLines = lines,
+            maxLines = lines,
             shape = RoundedCornerShape(5),
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = InputBgColor,

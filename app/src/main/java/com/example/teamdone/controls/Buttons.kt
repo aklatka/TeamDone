@@ -29,16 +29,19 @@ import com.example.teamdone.R
 fun PrimaryButton(
     text: String = "",
     onClick: () -> Unit = {},
-    loading: Boolean = false
+    loading: Boolean = false,
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier
 ) {
 
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(5),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
             .padding(0.dp),
         border = BorderStroke(1.dp, colorResource(R.color.primary)),
-        colors = ButtonDefaults.buttonColors(colorResource(R.color.primary))
+        colors = ButtonDefaults.buttonColors(colorResource(R.color.primary)),
+        enabled = enabled
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -62,22 +65,24 @@ fun PrimaryButton(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun SecondaryButton(
     text: String = "Click me",
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier
 ) {
 
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(5),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
             .padding(0.dp),
         colors = ButtonDefaults.buttonColors(
             Color.Transparent
         ),
-        border = BorderStroke(1.dp, colorResource(R.color.primary))
+        border = BorderStroke(1.dp, colorResource(R.color.primary)),
+        enabled = enabled
     ) {
         Text(text, color = colorResource(R.color.primary))
     }

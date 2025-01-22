@@ -5,7 +5,9 @@ enum class Screen {
     AUTH_SIGNUP,
     MAIN,
     DASHBOARD,
-    SETTINGS
+    SETTINGS,
+    TEAM_LIST,
+    NEW_TEAM
 }
 
 sealed class NavigationItem(val route: String) {
@@ -17,4 +19,6 @@ sealed class NavigationItem(val route: String) {
 sealed class AuthorizedNavigationItem(val route: String) {
     data object Dashboard : AuthorizedNavigationItem(Screen.DASHBOARD.name)
     data object Settings : AuthorizedNavigationItem(Screen.SETTINGS.name)
+    data object TeamList : AuthorizedNavigationItem(Screen.TEAM_LIST.name)
+    data object NewTeam : AuthorizedNavigationItem(Screen.NEW_TEAM.name)
 }
