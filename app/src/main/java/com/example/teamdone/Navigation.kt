@@ -3,17 +3,18 @@ package com.example.teamdone
 enum class Screen {
     AUTH_LOGIN,
     AUTH_SIGNUP,
-    MAIN,
+    AUTHORIZED,
     DASHBOARD,
     SETTINGS,
     TEAM_LIST,
-    NEW_TEAM
+    NEW_TEAM,
+    FORM
 }
 
 sealed class NavigationItem(val route: String) {
     data object AuthLogin : NavigationItem(Screen.AUTH_LOGIN.name)
     data object AuthSignup : NavigationItem(Screen.AUTH_SIGNUP.name)
-    data object Main : NavigationItem(Screen.MAIN.name)
+    data object Authorized : NavigationItem(Screen.AUTHORIZED.name)
 }
 
 sealed class AuthorizedNavigationItem(val route: String) {

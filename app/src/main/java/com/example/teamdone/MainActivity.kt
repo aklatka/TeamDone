@@ -53,7 +53,7 @@ fun App(
 
     AppNavHost(
         startDestination =
-            if(auth.currentUser != null) NavigationItem.Main.route
+            if(auth.currentUser != null) NavigationItem.Authorized.route
             else NavigationItem.AuthLogin.route
     )
 }

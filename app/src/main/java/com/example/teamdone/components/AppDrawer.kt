@@ -3,7 +3,10 @@ package com.example.teamdone.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,12 +22,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -38,13 +43,19 @@ import kotlinx.coroutines.launch
 fun AppDrawer(
     navController: NavHostController,
     authNavController: NavHostController,
+    formMode: Boolean = false,
+    topBarTitle: String = "Pulpit",
     viewModel: AppViewModel = hiltViewModel(),
     content: @Composable () -> Unit,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    var title by remember { mutableStateOf("Pulipt") }
+    var title by remember { mutableStateOf(topBarTitle) }
+
+    LaunchedEffect(topBarTitle) {
+        title = topBarTitle
+    }
 
     fun tabNavigate(
         tabTitle: String,
@@ -107,32 +118,50 @@ fun AppDrawer(
                             selected = false,
                             onClick = {
                                 viewModel.logout()
-                                authNavController.navigate(NavigationItem.AuthLogin.route)
+                                authNavController.navigate(NavigationItem.AuthLogin.route) {
+                                    popUpTo(0)
+                                }
                             }
                         )
                     }
                 }
             }
         },
-        drawerState = drawerState
+        drawerState = drawerState,
+        gesturesEnabled = !formMode
     ) {
         Scaffold(
             topBar = {
                 TopAppBar(
+                    modifier = Modifier
+                        .shadow(5.dp, shape = RoundedCornerShape(0.dp)),
                     title = {
                         Text(title)
                     },
                     navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                scope.launch {
-                                    drawerState.apply {
-                                        if(isClosed) open() else close()
+                        if(formMode) {
+                            IconButton(
+                                onClick = {
+                                    navController.popBackStack()
+                                }
+                            ) {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = "Cofnij"
+                                )
+                            }
+                        } else {
+                            IconButton(
+                                onClick = {
+                                    scope.launch {
+                                        drawerState.apply {
+                                            if(isClosed) open() else close()
+                                        }
                                     }
                                 }
+                            ) {
+                                Icon(Icons.Default.Menu, contentDescription = "Menu")
                             }
-                        ) {
-                            Icon(Icons.Default.Menu, contentDescription = "Menu")
                         }
                     }
                 )
@@ -141,6 +170,7 @@ fun AppDrawer(
 
             Surface(
                 modifier = Modifier.padding(contentPadding)
+                    .padding(vertical = 0.dp)
             ) {
                 content()
             }

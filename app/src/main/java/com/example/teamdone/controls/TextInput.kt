@@ -1,6 +1,5 @@
 package com.example.teamdone.controls
 
-import android.graphics.drawable.shapes.Shape
 import android.text.InputType
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -64,7 +63,7 @@ fun TextInput(
                     if (isFocused) colorResource(R.color.primary) else InputBorderColor,
                     RoundedCornerShape(5)
                 )
-                .background(InputBgColor, RoundedCornerShape(5))
+                .background(InputBgColor, RoundedCornerShape(5.dp))
                 .focusRequester(focusRequester)
                 .onFocusChanged { state ->
                     isFocused = state.isFocused

@@ -1,6 +1,7 @@
 package com.example.teamdone.screens
 
-import android.util.Log
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun MainScreen(
+fun DrawerScreen(
     authNavController: NavHostController,
     viewModel: AppViewModel = hiltViewModel()
 ) {
@@ -30,6 +31,9 @@ fun MainScreen(
     val firestore = FirebaseFirestore.getInstance()
 
     var user by remember { mutableStateOf<User?>(null) }
+
+    var title by remember { mutableStateOf("") }
+    var isFormMode by remember { mutableStateOf(false) }
 
     fbUser?.let {
         firestore.collection("users")
@@ -41,7 +45,9 @@ fun MainScreen(
 
     AppDrawer(
         navController = navController,
-        authNavController = authNavController
+        authNavController = authNavController,
+        topBarTitle = title,
+        formMode = isFormMode
     ) {
         NavHost(
             modifier = Modifier,
@@ -51,22 +57,29 @@ fun MainScreen(
             composable(
                 AuthorizedNavigationItem.Dashboard.route,
             ) {
+                isFormMode = false
+
                 DashboardScreen(navController)
             }
             composable(
                 AuthorizedNavigationItem.TeamList.route,
             ) {
+                isFormMode = false
+                title = "Twoje zespoły"
                 TeamListScreen(navController)
             }
             composable(
-                AuthorizedNavigationItem.NewTeam.route,
+                AuthorizedNavigationItem.NewTeam.route
             ) {
+                isFormMode = true
+                title = "Nowy zespół"
                 NewTeamScreen(navController)
             }
             composable(
                 AuthorizedNavigationItem.Settings.route,
             ) {
                 viewModel.ladCurrentUser()
+                isFormMode = false
 
                 SettingsScreen(navController, user)
             }

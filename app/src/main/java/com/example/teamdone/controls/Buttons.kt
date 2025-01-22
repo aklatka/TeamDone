@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -36,7 +37,7 @@ fun PrimaryButton(
 
     Button(
         onClick = onClick,
-        shape = RoundedCornerShape(5),
+        shape = RoundedCornerShape(5.dp),
         modifier = modifier
             .padding(0.dp),
         border = BorderStroke(1.dp, colorResource(R.color.primary)),
@@ -46,7 +47,7 @@ fun PrimaryButton(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.wrapContentWidth()
         ) {
             if(loading) {
                 Box(
@@ -70,12 +71,12 @@ fun SecondaryButton(
     text: String = "Click me",
     onClick: () -> Unit = {},
     enabled: Boolean = true,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier.fillMaxWidth()
 ) {
 
     Button(
         onClick = onClick,
-        shape = RoundedCornerShape(5),
+        shape = RoundedCornerShape(5.dp),
         modifier = modifier
             .padding(0.dp),
         colors = ButtonDefaults.buttonColors(

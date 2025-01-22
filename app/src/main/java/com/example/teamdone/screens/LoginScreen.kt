@@ -54,7 +54,7 @@ fun LoginScreen(
                 viewModel.setUser(user)
                 loading = false
                 viewModel.login()
-                navController.navigate(NavigationItem.Main.route) {
+                navController.navigate(NavigationItem.Authorized.route) {
                     popUpTo(0)
                 }
             },
