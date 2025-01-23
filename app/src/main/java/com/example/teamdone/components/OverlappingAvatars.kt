@@ -57,6 +57,7 @@ fun OverlappingAvatars(
                 modifier = Modifier
                     .size(avatarSize)
                     .offset(x = (-visibleAvatars.size * overlap))
+                    .zIndex(visibleAvatars.size.toFloat())
                     .clip(CircleShape)
                     .background(Color.Gray)
                     .border(2.dp, Color.White, CircleShape),
@@ -65,7 +66,7 @@ fun OverlappingAvatars(
                 Text(
                     text = "+$extraCount",
                     color = Color.White,
-                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)
                 )
             }
         }

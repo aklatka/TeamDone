@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
 //            delay(1000)
 //            keepSplashScreen = false
 //        }
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContent {
             TeamDoneTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

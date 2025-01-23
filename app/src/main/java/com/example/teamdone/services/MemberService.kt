@@ -40,7 +40,8 @@ class MemberService private constructor() {
                                 Member(
                                     user,
                                     member["inviteAccepted"] as Boolean,
-                                    teamId
+                                    teamId,
+                                    member["owner"] as Boolean
                                 )
                             )
                         }

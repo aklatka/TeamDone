@@ -88,7 +88,8 @@ fun SignupScreen(
                 PrimaryButton(
                     stringResource(R.string.sign_up),
                     onClick = { submit() },
-                    loading = loading
+                    loading = loading,
+                    modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(Modifier.height(10.dp))
                 SecondaryButton(
@@ -104,7 +105,8 @@ fun SignupScreen(
                         navController.navigate(NavigationItem.Authorized.route) {
                             popUpTo(0)
                         }
-                    }
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }

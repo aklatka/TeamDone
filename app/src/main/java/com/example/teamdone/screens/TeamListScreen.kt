@@ -81,7 +81,7 @@ fun TeamListScreen(
             }
             teams.forEach {
                 item {
-                    TeamCard(it)
+                    TeamCard(it, navController)
                 }
             }
             item {

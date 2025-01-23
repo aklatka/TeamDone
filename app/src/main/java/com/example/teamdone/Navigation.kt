@@ -8,7 +8,12 @@ enum class Screen {
     SETTINGS,
     TEAM_LIST,
     NEW_TEAM,
-    FORM
+    TEAM,
+    TEAM_DASHBOARD,
+    TEAM_TASK_LIST,
+    TEAM_MEMBER_LIST,
+    TEAM_ADD_TASKS,
+    TEAM_ADD_MEMBERS
 }
 
 sealed class NavigationItem(val route: String) {
@@ -22,4 +27,10 @@ sealed class AuthorizedNavigationItem(val route: String) {
     data object Settings : AuthorizedNavigationItem(Screen.SETTINGS.name)
     data object TeamList : AuthorizedNavigationItem(Screen.TEAM_LIST.name)
     data object NewTeam : AuthorizedNavigationItem(Screen.NEW_TEAM.name)
+    data object Team : AuthorizedNavigationItem(Screen.TEAM.name)
+    data object TeamDashboard : AuthorizedNavigationItem(Screen.TEAM_DASHBOARD.name)
+    data object TeamTaskList : AuthorizedNavigationItem(Screen.TEAM_TASK_LIST.name)
+    data object TeamAddTasks : AuthorizedNavigationItem(Screen.TEAM_ADD_TASKS.name)
+    data object TeamMemberList : AuthorizedNavigationItem(Screen.TEAM_MEMBER_LIST.name)
+    data object TeamAddMembers : AuthorizedNavigationItem(Screen.TEAM_ADD_MEMBERS.name)
 }

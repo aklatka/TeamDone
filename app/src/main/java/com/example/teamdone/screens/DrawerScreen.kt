@@ -19,6 +19,8 @@ import com.example.teamdone.data.User
 import com.example.teamdone.states.AppViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun DrawerScreen(
@@ -34,6 +36,7 @@ fun DrawerScreen(
 
     var title by remember { mutableStateOf("") }
     var isFormMode by remember { mutableStateOf(false) }
+    var isTopBarHidden by remember { mutableStateOf(false) }
 
     fbUser?.let {
         firestore.collection("users")
@@ -47,7 +50,8 @@ fun DrawerScreen(
         navController = navController,
         authNavController = authNavController,
         topBarTitle = title,
-        formMode = isFormMode
+        formMode = isFormMode,
+        topBarHidden = isTopBarHidden
     ) {
         NavHost(
             modifier = Modifier,
@@ -58,6 +62,7 @@ fun DrawerScreen(
                 AuthorizedNavigationItem.Dashboard.route,
             ) {
                 isFormMode = false
+                isTopBarHidden = false
 
                 DashboardScreen(navController)
             }
@@ -65,6 +70,7 @@ fun DrawerScreen(
                 AuthorizedNavigationItem.TeamList.route,
             ) {
                 isFormMode = false
+                isTopBarHidden = false
                 title = "Twoje zespoły"
                 TeamListScreen(navController)
             }
@@ -72,14 +78,34 @@ fun DrawerScreen(
                 AuthorizedNavigationItem.NewTeam.route
             ) {
                 isFormMode = true
+                isTopBarHidden = false
                 title = "Nowy zespół"
                 NewTeamScreen(navController)
+            }
+            composable(
+                "${AuthorizedNavigationItem.Team.route}/{id}?title={title}"
+            ) { backStackEntry ->
+                val id = backStackEntry.arguments?.getString("id")
+                val routeTitle = URLDecoder.decode(
+                    backStackEntry.arguments?.getString("title"),
+                    StandardCharsets.UTF_8.toString()
+                )
+
+                if(id == null) {
+                    navController.popBackStack()
+                } else {
+                    isFormMode = true
+                    isTopBarHidden = true
+                    title = routeTitle ?: "Unknown"
+                    TeamScreen(navController, id, routeTitle)
+                }
             }
             composable(
                 AuthorizedNavigationItem.Settings.route,
             ) {
                 viewModel.ladCurrentUser()
                 isFormMode = false
+                isTopBarHidden = false
 
                 SettingsScreen(navController, user)
             }

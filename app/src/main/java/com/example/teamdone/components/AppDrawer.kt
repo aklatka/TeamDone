@@ -23,6 +23,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +31,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.teamdone.AuthorizedNavigationItem
@@ -44,12 +47,14 @@ fun AppDrawer(
     navController: NavHostController,
     authNavController: NavHostController,
     formMode: Boolean = false,
+    topBarHidden: Boolean = false,
     topBarTitle: String = "Pulpit",
     viewModel: AppViewModel = hiltViewModel(),
     content: @Composable () -> Unit,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val user = viewModel.user.collectAsState()
 
     var title by remember { mutableStateOf(topBarTitle) }
 
@@ -73,7 +78,11 @@ fun AppDrawer(
     ModalNavigationDrawer(
         drawerContent = {
             ModalDrawerSheet {
-                Text("Menu", modifier = Modifier.padding(16.dp))
+                Text(
+                    "Cześć ${user.value?.firstname}",
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Medium
+                )
                 HorizontalDivider()
                 Column(
                     modifier = Modifier.fillMaxHeight(),
@@ -132,39 +141,41 @@ fun AppDrawer(
     ) {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    modifier = Modifier
-                        .shadow(5.dp, shape = RoundedCornerShape(0.dp)),
-                    title = {
-                        Text(title)
-                    },
-                    navigationIcon = {
-                        if(formMode) {
-                            IconButton(
-                                onClick = {
-                                    navController.popBackStack()
+                if(!topBarHidden) {
+                    TopAppBar(
+                        modifier = Modifier
+                            .shadow(5.dp, shape = RoundedCornerShape(0.dp)),
+                        title = {
+                            Text(title)
+                        },
+                        navigationIcon = {
+                            if(formMode) {
+                                IconButton(
+                                    onClick = {
+                                        navController.popBackStack()
+                                    }
+                                ) {
+                                    Icon(
+                                        Icons.AutoMirrored.Filled.ArrowBack,
+                                        contentDescription = "Cofnij"
+                                    )
                                 }
-                            ) {
-                                Icon(
-                                    Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = "Cofnij"
-                                )
-                            }
-                        } else {
-                            IconButton(
-                                onClick = {
-                                    scope.launch {
-                                        drawerState.apply {
-                                            if(isClosed) open() else close()
+                            } else {
+                                IconButton(
+                                    onClick = {
+                                        scope.launch {
+                                            drawerState.apply {
+                                                if(isClosed) open() else close()
+                                            }
                                         }
                                     }
+                                ) {
+                                    Icon(Icons.Default.Menu, contentDescription = "Menu")
                                 }
-                            ) {
-                                Icon(Icons.Default.Menu, contentDescription = "Menu")
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
         ) { contentPadding ->
 

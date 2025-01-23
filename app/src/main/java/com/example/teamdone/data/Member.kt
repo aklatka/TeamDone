@@ -3,5 +3,6 @@ package com.example.teamdone.data
 data class Member(
     val user: User,
     val inviteAccepted: Boolean,
-    val teamId: String
+    val teamId: String,
+    val owner: Boolean = false
 )
