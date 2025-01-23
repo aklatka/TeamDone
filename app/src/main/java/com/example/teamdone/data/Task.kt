@@ -19,9 +19,28 @@ enum class TaskPriority(
 }
 
 data class Task(
+    val id: String,
     val title: String,
     val description: String,
-    val priority: TaskPriority
+    val priority: TaskPriority,
+    val done: Boolean = false
 ) {
+
+    companion object {
+
+        fun fromMap(
+            id: String,
+            data: MutableMap<String, Any>
+        ): Task {
+            return Task(
+                id = id,
+                title = data["title"].toString(),
+                description = data["description"].toString(),
+                priority = TaskPriority.valueOf(data["priority"].toString()),
+                done = data["done"] as Boolean,
+            )
+        }
+
+    }
 
 }
