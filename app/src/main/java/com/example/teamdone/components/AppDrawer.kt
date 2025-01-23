@@ -1,7 +1,9 @@
 package com.example.teamdone.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -31,6 +33,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,7 +41,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.teamdone.AuthorizedNavigationItem
 import com.example.teamdone.NavigationItem
+import com.example.teamdone.data.User
 import com.example.teamdone.states.AppViewModel
+import com.example.teamdone.ui.theme.PrimaryColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,12 +54,12 @@ fun AppDrawer(
     formMode: Boolean = false,
     topBarHidden: Boolean = false,
     topBarTitle: String = "Pulpit",
+    user: User? = null,
     viewModel: AppViewModel = hiltViewModel(),
     content: @Composable () -> Unit,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val user = viewModel.user.collectAsState()
 
     var title by remember { mutableStateOf(topBarTitle) }
 
@@ -78,24 +83,36 @@ fun AppDrawer(
     ModalNavigationDrawer(
         drawerContent = {
             ModalDrawerSheet {
-                Text(
-                    "Cześć ${user.value?.firstname}",
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                Surface(
+                    color = PrimaryColor
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(20.dp)
+                    ) {
+                        user?.let {
+                            Text(
+                                "Cześć ${it.firstname}",
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.White
+                            )
+                        }
+                    }
+                }
                 HorizontalDivider()
                 Column(
                     modifier = Modifier.fillMaxHeight(),
                 ) {
-                    NavigationDrawerItem(
-                        label = {
-                            Text("Pulpit")
-                        },
-                        selected = false,
-                        onClick = {
-                            tabNavigate("Pulpit", AuthorizedNavigationItem.Dashboard.route)
-                        }
-                    )
+//                    NavigationDrawerItem(
+//                        label = {
+//                            Text("Pulpit")
+//                        },
+//                        selected = false,
+//                        onClick = {
+//                            tabNavigate("Pulpit", AuthorizedNavigationItem.Dashboard.route)
+//                        }
+//                    )
                     NavigationDrawerItem(
                         label = {
                             Text("Zespoły")

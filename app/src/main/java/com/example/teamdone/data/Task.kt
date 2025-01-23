@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.teamdone.ui.theme.ErrorColor
 import com.example.teamdone.ui.theme.PrimaryColor
+import com.example.teamdone.ui.theme.SuccessColor
 import com.example.teamdone.ui.theme.WarningColor
 
 enum class TaskPriority(
@@ -18,12 +19,22 @@ enum class TaskPriority(
     HIGH(Icons.Filled.Flag, "Wysoki", ErrorColor),
 }
 
+enum class TaskStatus(
+    val displayName: String,
+    val color: Color
+) {
+    BACKLOG("Oczekujące", ErrorColor),
+    IN_PROGRESS("W trakcie", PrimaryColor),
+    COMPLETE("Ukończone", SuccessColor)
+}
+
 data class Task(
     val id: String,
     val title: String,
     val description: String,
     val priority: TaskPriority,
-    val done: Boolean = false
+    val done: Boolean = false,
+    val status: TaskStatus = TaskStatus.BACKLOG
 ) {
 
     companion object {
@@ -38,6 +49,7 @@ data class Task(
                 description = data["description"].toString(),
                 priority = TaskPriority.valueOf(data["priority"].toString()),
                 done = data["done"] as Boolean,
+                status = TaskStatus.valueOf(data["status"].toString())
             )
         }
 

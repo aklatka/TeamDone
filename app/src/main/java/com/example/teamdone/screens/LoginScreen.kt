@@ -1,9 +1,6 @@
 package com.example.teamdone.screens
 
 import android.text.InputType
-import android.util.Log
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,20 +16,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.teamdone.NavigationItem
 import com.example.teamdone.R
-import com.example.teamdone.components.TextDivider
 import com.example.teamdone.controls.PrimaryButton
 import com.example.teamdone.controls.SecondaryButton
-import com.example.teamdone.controls.SocialLoginButton
 import com.example.teamdone.controls.TextInput
 import com.example.teamdone.layouts.AuthLayout
 import com.example.teamdone.services.AuthService
 import com.example.teamdone.states.AppViewModel
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Brands
-import compose.icons.fontawesomeicons.brands.Github
-import compose.icons.fontawesomeicons.brands.Google
-import compose.icons.fontawesomeicons.brands.Microsoft
 
 @Composable
 fun LoginScreen(
@@ -47,8 +37,12 @@ fun LoginScreen(
     val errorCredentials = stringResource(R.string.error_invalid_credentials)
 
     fun submit() {
+        if(email.isEmpty() || password.isEmpty()) {
+            return;
+        }
+
         loading = true
-        AuthService().loginUser(
+        AuthService.getInstance().loginUser(
             email,
             password,
             onSuccess = { user ->
@@ -95,23 +89,23 @@ fun LoginScreen(
             )
         }
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            SocialLoginButton(
-                stringResource(R.string.login_by_google),
-                FontAwesomeIcons.Brands.Google
-            )
-            SocialLoginButton(
-                stringResource(R.string.login_by_github),
-                FontAwesomeIcons.Brands.Github
-            )
-            SocialLoginButton(
-                stringResource(R.string.login_by_microsoft),
-                FontAwesomeIcons.Brands.Microsoft
-            )
-        }
-        TextDivider("lub")
+//        Column(
+//            verticalArrangement = Arrangement.spacedBy(10.dp)
+//        ) {
+//            SocialLoginButton(
+//                stringResource(R.string.login_by_google),
+//                FontAwesomeIcons.Brands.Google
+//            )
+//            SocialLoginButton(
+//                stringResource(R.string.login_by_github),
+//                FontAwesomeIcons.Brands.Github
+//            )
+//            SocialLoginButton(
+//                stringResource(R.string.login_by_microsoft),
+//                FontAwesomeIcons.Brands.Microsoft
+//            )
+//        }
+//        TextDivider("lub")
         TextInput(
             value = email,
             onValueChange = {email = it},

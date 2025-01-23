@@ -52,8 +52,16 @@ fun SignupScreen(
     var user: User? by remember { mutableStateOf(null) }
 
     fun submit() {
+        if(
+            firstname.isEmpty() ||
+            lastname.isEmpty() ||
+            email.isEmpty()
+        ) {
+            return;
+        }
+
         loading = true
-        AuthService().createUser(
+        AuthService.getInstance().createUser(
             firstname,
             lastname,
             email,

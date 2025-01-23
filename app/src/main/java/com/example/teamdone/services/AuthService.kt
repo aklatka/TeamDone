@@ -8,8 +8,9 @@ import java.math.BigInteger
 import java.security.MessageDigest
 import kotlin.random.Random
 
-class AuthService {
+class AuthService private constructor() {
     private val TAG = "AuthService: ";
+    val firestore = FirebaseFirestore.getInstance()
 
     fun createUser(
         firstname: String,
@@ -70,7 +71,6 @@ class AuthService {
         onFailure: (error: Exception) -> Unit
     ) {
         val auth = FirebaseAuth.getInstance()
-        val firestore = FirebaseFirestore.getInstance()
 
         auth.signInWithEmailAndPassword(
             email,
@@ -97,6 +97,27 @@ class AuthService {
         };
     }
 
+    fun fetchUser(
+        userId: String,
+        onSuccess: (user: User) -> Unit,
+        onFailure: (error: Exception) -> Unit
+    ) {
+        firestore
+            .collection("users")
+            .document(userId)
+            .get()
+            .addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    User.fromMap(task.result.data)?.let {
+                        onSuccess(
+                            it
+                        )
+                    }
+                }
+            }
+            .addOnFailureListener(onFailure)
+    }
+
     private fun generateUsername(firstname: String, lastname: String): String {
         val sanitizedFirstname = firstname.lowercase().replace(" ", "")
         val sanitizedLastname = lastname.lowercase().replace(" ", "")
@@ -116,5 +137,17 @@ class AuthService {
         val baseUrl = "https://api.dicebear.com/9.x"
         val style = "initials"
         return "$baseUrl/$style/png?seed=$seed&fontFamily=Verdana&fontWeight=200&chars=1"
+    }
+
+    companion object {
+
+        @Volatile private var instance: AuthService? = null
+
+        fun getInstance() =
+            instance ?: synchronized(this) {
+                AuthService().also {
+                    instance = it
+                }
+            }
     }
 }

@@ -3,6 +3,7 @@ package com.example.teamdone.screens
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.teamdone.AuthorizedNavigationItem
 import com.example.teamdone.components.AppDrawer
 import com.example.teamdone.data.User
+import com.example.teamdone.services.AuthService
 import com.example.teamdone.states.AppViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,12 +40,17 @@ fun DrawerScreen(
     var isFormMode by remember { mutableStateOf(false) }
     var isTopBarHidden by remember { mutableStateOf(false) }
 
-    fbUser?.let {
-        firestore.collection("users")
-            .document(it.uid)
-            .addSnapshotListener { value, error ->
-                user = User.fromMap(value?.data)
-            }
+    LaunchedEffect(viewModel) {
+        fbUser?.let {
+            AuthService.getInstance()
+                .fetchUser(
+                    it.uid,
+                    onSuccess = { u ->
+                        user = u
+                    },
+                    onFailure = {}
+                )
+        }
     }
 
     AppDrawer(
@@ -51,21 +58,22 @@ fun DrawerScreen(
         authNavController = authNavController,
         topBarTitle = title,
         formMode = isFormMode,
-        topBarHidden = isTopBarHidden
+        topBarHidden = isTopBarHidden,
+        user = user
     ) {
         NavHost(
             modifier = Modifier,
             navController = navController,
-            startDestination = AuthorizedNavigationItem.Dashboard.route
+            startDestination = AuthorizedNavigationItem.TeamList.route
         ) {
-            composable(
-                AuthorizedNavigationItem.Dashboard.route,
-            ) {
-                isFormMode = false
-                isTopBarHidden = false
-
-                DashboardScreen(navController)
-            }
+//            composable(
+//                AuthorizedNavigationItem.Dashboard.route,
+//            ) {
+//                isFormMode = false
+//                isTopBarHidden = false
+//
+//                DashboardScreen(navController)
+//            }
             composable(
                 AuthorizedNavigationItem.TeamList.route,
             ) {

@@ -7,12 +7,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckBox
 import androidx.compose.material.icons.filled.Dashboard
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PeopleAlt
 import androidx.compose.material.icons.outlined.CheckBox
 import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.PeopleAlt
-import androidx.compose.material.icons.outlined.TaskAlt
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,7 +34,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.teamdone.AuthorizedNavigationItem
 import com.example.teamdone.components.TabBottomBar
 import com.example.teamdone.components.TabItem
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,7 +107,7 @@ fun TeamScreen(
     ) { padding ->
         Surface(
             modifier = Modifier.padding(padding)
-                .padding(horizontal = 0.dp)
+                .padding(horizontal = 0.dp, vertical = 0.dp)
         ) {
             NavHost(
                 navController = tabNavController,
@@ -122,7 +119,7 @@ fun TeamScreen(
                     title = "Pulpit"
                     isBottomBarHidden = false
                     isLocalBack = false
-                    TeamTaskListScreen(tabNavController, teamId)
+                    TeamDashboardScreen(tabNavController, teamId)
                 }
                 composable(
                     AuthorizedNavigationItem.TeamTaskList.route

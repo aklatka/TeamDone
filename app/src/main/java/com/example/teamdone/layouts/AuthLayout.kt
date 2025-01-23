@@ -38,14 +38,16 @@ fun AuthLayout(
             textAlign = TextAlign.Center,
             color = colorResource(R.color.primary),
         )
+        Spacer(Modifier.height(10.dp))
+        if(!signupMode) {
+            Text(stringResource(
+                if(signupMode) R.string.signup_subtitle
+                else R.string.login_subtitle),
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp
+            )
+        }
         Spacer(Modifier.height(20.dp))
-        Text(stringResource(
-            if(signupMode) R.string.signup_subtitle
-            else R.string.login_subtitle),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
-        Spacer(Modifier.height(30.dp))
         Column(
             modifier = Modifier.fillMaxHeight(),
             verticalArrangement = Arrangement.SpaceBetween

@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
+    implementation("co.yml:ycharts:2.1.0")
     kapt(libs.hilt.compiler)
     implementation("com.google.dagger:dagger:2.51.1")
     kapt("com.google.dagger:dagger-compiler:2.51.1")

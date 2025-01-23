@@ -34,7 +34,9 @@ fun NewTeamScreen(
                 name,
                 description,
                 users
-            )
+            ) {
+                navController.popBackStack()
+            }
     }
 
     @Composable
