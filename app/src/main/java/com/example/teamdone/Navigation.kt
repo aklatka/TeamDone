@@ -13,6 +13,7 @@ enum class Screen {
     TEAM_TASK_LIST,
     TEAM_MEMBER_LIST,
     TEAM_ADD_TASKS,
+    TEAM_ADD_TASKS_FOR_MEMBER,
     TEAM_ADD_MEMBERS
 }
 
@@ -31,6 +32,7 @@ sealed class AuthorizedNavigationItem(val route: String) {
     data object TeamDashboard : AuthorizedNavigationItem(Screen.TEAM_DASHBOARD.name)
     data object TeamTaskList : AuthorizedNavigationItem(Screen.TEAM_TASK_LIST.name)
     data object TeamAddTasks : AuthorizedNavigationItem(Screen.TEAM_ADD_TASKS.name)
+    data object TeamAddTasksForMember : AuthorizedNavigationItem(Screen.TEAM_ADD_TASKS_FOR_MEMBER.name)
     data object TeamMemberList : AuthorizedNavigationItem(Screen.TEAM_MEMBER_LIST.name)
     data object TeamAddMembers : AuthorizedNavigationItem(Screen.TEAM_ADD_MEMBERS.name)
 }

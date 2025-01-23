@@ -49,6 +49,7 @@ fun TeamScreen(
 
     var title by remember { mutableStateOf("") }
     var isBottomBarHidden by remember { mutableStateOf(false) }
+    var isLocalBack by remember { mutableStateOf(true) }
 
     Scaffold(
         topBar = {
@@ -64,7 +65,11 @@ fun TeamScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            navController.popBackStack()
+                            if(isLocalBack) {
+                                tabNavController.popBackStack()
+                            } else {
+                                navController.popBackStack()
+                            }
                         }
                     ) {
                         Icon(
@@ -116,6 +121,7 @@ fun TeamScreen(
                 ) {
                     title = "Pulpit"
                     isBottomBarHidden = false
+                    isLocalBack = false
                     TeamTaskListScreen(tabNavController, teamId)
                 }
                 composable(
@@ -123,20 +129,29 @@ fun TeamScreen(
                 ) {
                     title = "Lista zadań"
                     isBottomBarHidden = false
+                    isLocalBack = false
                     TeamTaskListScreen(tabNavController, teamId)
                 }
                 composable(
-                    AuthorizedNavigationItem.TeamAddTasks.route
-                ) {
+                    "${AuthorizedNavigationItem.TeamAddTasksForMember.route}/{memberId}"
+                ) { backStackEntry ->
+                    val memberId = backStackEntry.arguments?.getString("memberId")
                     title = "Nowe zadania"
                     isBottomBarHidden = true
-                    TeamTaskListScreen(tabNavController, teamId)
+                    isLocalBack = true
+
+                    if(memberId == null) {
+                        tabNavController.popBackStack()
+                    } else {
+                        TeamAddTasksScreen(tabNavController, teamId, memberId)
+                    }
                 }
                 composable(
                     AuthorizedNavigationItem.TeamMemberList.route
                 ) {
                     title = "Lista uczestników"
                     isBottomBarHidden = false
+                    isLocalBack = false
                     TeamMemberListScreen(tabNavController, teamId)
                 }
                 composable(

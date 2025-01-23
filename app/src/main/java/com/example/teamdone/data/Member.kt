@@ -1,6 +1,7 @@
 package com.example.teamdone.data
 
 data class Member(
+    val id: String,
     val user: User,
     val inviteAccepted: Boolean,
     val inviteStatus: String = INVITE_STATUS_PENDING,

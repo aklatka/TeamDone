@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImagePainter
 import com.example.teamdone.controls.PrimaryButton
 import com.example.teamdone.controls.SecondaryButton
 
@@ -32,7 +33,10 @@ import com.example.teamdone.controls.SecondaryButton
 fun Stepper(
     steps: List<String>,
     valid: Boolean = true,
+    finishButtonText: String = "Utwórz",
+    loading: Boolean = false,
     onFinish: () -> Unit = {},
+    header: (@Composable () -> Unit)? = null,
     content: @Composable (step: Int) -> Unit,
 ) {
     var currentStep by remember { mutableIntStateOf(0) }
@@ -65,11 +69,16 @@ fun Stepper(
             label = ""
         ) { step ->
             Column {
-                Text(
-                    steps[step],
-                    fontWeight = FontWeight.W600,
-                    fontSize = 20.sp
-                )
+                if(steps.isNotEmpty()) {
+                    Text(
+                        steps[step],
+                        fontWeight = FontWeight.W600,
+                        fontSize = 20.sp
+                    )
+                }
+                header?.let {
+                    it()
+                }
                 HorizontalDivider(Modifier.padding(0.dp, 10.dp))
 
                 content(step)
@@ -92,7 +101,7 @@ fun Stepper(
                 )
             }
             PrimaryButton(
-                if(currentStep == steps.size - 1) "Utwórz" else "Dalej",
+                if(currentStep == steps.size - 1 || steps.isEmpty()) finishButtonText else "Dalej",
                 onClick = {
                     if(currentStep < steps.size - 1) {
                         isNextStep = true
@@ -101,6 +110,7 @@ fun Stepper(
                         onFinish()
                     }
                 },
+                loading = loading,
                 enabled = valid,
                 modifier = Modifier.fillMaxWidth()
             )

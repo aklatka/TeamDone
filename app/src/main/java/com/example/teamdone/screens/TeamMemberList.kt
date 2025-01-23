@@ -79,7 +79,14 @@ fun TeamMemberListScreen(
             }
             members.forEach {
                 item {
-                    MemberItem(it)
+                    MemberItem(
+                        it,
+                        onAddTask = { m ->
+                            navController.navigate(
+                                "${AuthorizedNavigationItem.TeamAddTasksForMember.route}/${m.id}"
+                            )
+                        }
+                    )
                 }
             }
             item {

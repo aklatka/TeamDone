@@ -38,6 +38,7 @@ class MemberService private constructor() {
                         user?.let {
                             members.add(
                                 Member(
+                                    member.id,
                                     user,
                                     member["inviteAccepted"] as Boolean,
                                     member["inviteStatus"].toString(),
@@ -49,6 +50,45 @@ class MemberService private constructor() {
                     }
                     onSuccess(members)
                 }
+            }
+    }
+
+    fun fetchMember(
+        id: String,
+        onSuccess: (members: Member) -> Unit,
+        onFailure: () -> Unit = {}
+    ) {
+
+        firestore
+            .collection("members")
+            .document(id)
+            .get()
+            .addOnCompleteListener { task ->
+                val member = task.result
+
+                firestore
+                    .collection("users")
+                    .whereEqualTo(FieldPath.documentId(), member["userId"])
+                    .get()
+                    .addOnCompleteListener { t ->
+                        val user = User.fromMap(t.result.documents[0].data)
+
+                        user?.let {
+                            onSuccess(
+                                Member(
+                                    member.id,
+                                    user,
+                                    member["inviteAccepted"] as Boolean,
+                                    member["inviteStatus"].toString(),
+                                    member["teamId"].toString(),
+                                    member["owner"] as Boolean,
+                                )
+                            )
+                        }
+                    }
+                    .addOnFailureListener {
+                        onFailure()
+                    }
             }
     }
 

@@ -22,7 +22,6 @@ class TeamService private constructor() {
         onSuccess: () -> Unit = {}
     ) {
         val currentUser = FirebaseAuth.getInstance().currentUser
-        val memberIds: ArrayList<String> = arrayListOf()
         val tasks = mutableListOf<Task<DocumentReference>>()
 
         val teamData = hashMapOf(
