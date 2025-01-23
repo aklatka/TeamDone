@@ -1,6 +1,7 @@
 package com.example.teamdone.services
 
 import android.util.Log
+import com.example.teamdone.data.Member
 import com.example.teamdone.data.Team
 import com.example.teamdone.data.User
 import com.google.android.gms.tasks.Task
@@ -45,6 +46,7 @@ class TeamService private constructor() {
                         "userId" to it.uid,
                         "teamId" to doc.id,
                         "inviteAccepted" to false,
+                        "inviteStatus" to Member.INVITE_STATUS_PENDING,
                         "owner" to false
                     )
                 } as ArrayList
@@ -53,7 +55,8 @@ class TeamService private constructor() {
                     members.add(hashMapOf(
                         "userId" to it.uid,
                         "teamId" to doc.id,
-                        "inviteAccepted" to false,
+                        "inviteAccepted" to true,
+                        "inviteStatus" to Member.INVITE_STATUS_ACCEPTED,
                         "owner" to true
                     ))
                 }
@@ -86,20 +89,23 @@ class TeamService private constructor() {
                     val teamIds = task.result.documents.map { it["teamId"] }
                     Log.d("Team Service", "fetchAllTeams: $teamIds")
 
-                    firestore
-                        .collection("teams")
-                        .whereIn(FieldPath.documentId(), teamIds)
-                        .get()
-                        .addOnSuccessListener { doc ->
-                            if(!doc.isEmpty) {
-                                doc.documents.mapNotNull { Team.fromMap(it.data) }.let {
-                                    onSuccess(it)
+                    if(teamIds.isNotEmpty()) {
+                        firestore
+                            .collection("teams")
+                            .whereIn(FieldPath.documentId(), teamIds)
+                            .get()
+                            .addOnSuccessListener { doc ->
+                                if(!doc.isEmpty) {
+                                    doc.documents.mapNotNull { Team.fromMap(it.data) }.let {
+                                        onSuccess(it)
+                                    }
                                 }
                             }
-                        }
+                    }
 
                 }
             }
+            .addOnFailureListener {  }
 
     }
 

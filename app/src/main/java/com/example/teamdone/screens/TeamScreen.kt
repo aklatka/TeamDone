@@ -57,7 +57,7 @@ fun TeamScreen(
                     .shadow(5.dp, shape = RoundedCornerShape(0.dp)),
                 title = {
                     Column {
-                        Text(name)
+                        Text(name, fontSize = 18.sp)
                         Text(title, fontSize = 16.sp)
                     }
                 },
@@ -137,7 +137,7 @@ fun TeamScreen(
                 ) {
                     title = "Lista uczestników"
                     isBottomBarHidden = false
-                    TeamTaskListScreen(tabNavController, teamId)
+                    TeamMemberListScreen(tabNavController, teamId)
                 }
                 composable(
                     AuthorizedNavigationItem.TeamAddMembers.route

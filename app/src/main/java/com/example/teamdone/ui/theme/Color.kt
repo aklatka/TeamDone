@@ -15,5 +15,6 @@ val Pink40 = Color(0xFF7D5260)
 val InputBgColor = Color(0xFFF6F6F6)
 val InputBorderColor = Color(0xFFC7C7C7)
 
-@SuppressLint("ResourceAsColor")
-val PrimaryColor = Color(R.color.primary)
+val PrimaryColor = Color(0xFF006CFF)
+val SuccessColor = Color(0xFF0FC486)
+val ErrorColor = Color(0xFFDE2B5E)
